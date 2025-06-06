@@ -8,13 +8,27 @@ import GUI from 'lil-gui';
  * Base
 */
 // Debug
-// const gui = new GUI();
+const debugObject = {};
+debugObject.color = "#08213a";
+const gui = new GUI({
+    width: 250,
+    title: "Debug UI 📜",
+    closeFolders: false
+});
+gui.hide();
+gui.close();
+
+gui.addColor(debugObject, 'color').onChange(() => { renderer.setClearColor(debugObject.color) })
+
+window.addEventListener('keydown', (event) => {
+    if (event.key == 'h') gui.show(gui._hidden);
+})
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
-
 // Scene
 const scene = new THREE.Scene();
+
 
 // AxesHelper
 // const axesHelper = new THREE.AxesHelper();
@@ -105,6 +119,7 @@ const texturesArray = texturePaths.map(file => {
 const RANGE = 10;
 const MAX_INDEX = texturesArray.length;
 const MIN_CUBE_SCALE = 0.2;
+const MIN_DIST_FROM_TEXT = 1;
 
 /**
  * Fonts
@@ -168,11 +183,16 @@ fontLoader.load(
                 block = new THREE.Mesh(boxGeometry, material);
             }
 
-            block.position.set(
-                (Math.random() - 0.5) * (RANGE + 2.25),
-                (Math.random() - 0.5) * (RANGE + 2.25),
-                (Math.random() - 0.5) * (RANGE + 2.25)
-            );
+            let position;
+            do {
+                position = new THREE.Vector3(
+                    (Math.random() - 0.5) * (RANGE + 2.25),
+                    (Math.random() - 0.5) * (RANGE + 2.25),
+                    (Math.random() - 0.5) * (RANGE + 2.25)
+                );
+            } while (position.distanceTo(new THREE.Vector3(0, 0, 0)) < MIN_DIST_FROM_TEXT);
+
+            block.position.copy(position);
 
             block.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
 
@@ -236,7 +256,7 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-renderer.setClearColor(0x6a8caf);
+renderer.setClearColor(debugObject.color);
 
 /**
  * Animate
