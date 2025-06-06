@@ -119,7 +119,7 @@ const texturesArray = texturePaths.map(file => {
 const RANGE = 10;
 const MAX_INDEX = texturesArray.length;
 const MIN_CUBE_SCALE = 0.2;
-const MIN_DIST_FROM_TEXT = 1;
+const MIN_DIST_FROM_TEXT = 1.25;
 
 /**
  * Fonts
@@ -244,6 +244,21 @@ scene.add(camera);
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true
+
+// auto rotation
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.5;
+
+// When user interacts, stop autoRotate temporarily
+let userIsInteracting = false;
+
+// Mouse / touch start: user interacting
+canvas.addEventListener('mousedown', () => userIsInteracting = true);
+canvas.addEventListener('touchstart', () => userIsInteracting = true);
+
+// Mouse / touch end: user stopped interacting, re-enable autoRotate
+canvas.addEventListener('mouseup', () => userIsInteracting = false);
+canvas.addEventListener('touchend', () => userIsInteracting = false);
 
 /**
  * Renderer
