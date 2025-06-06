@@ -1,8 +1,8 @@
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import GUI from 'lil-gui'
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import GUI from 'lil-gui';
 
 /**
  * Base
@@ -109,12 +109,13 @@ const MIN_CUBE_SCALE = 0.2;
 /**
  * Fonts
 */
+let textGeometry;
 const fontLoader = new FontLoader();
 fontLoader.load(
     '/fonts/Minecraft_Regular.json',
     (font) => {
         console.log("Loaded font", font);
-        const textGeometry = new TextGeometry(
+        textGeometry = new TextGeometry(
             'Chicken Jockey',
             {
                 font,
@@ -137,7 +138,7 @@ fontLoader.load(
         const text = new THREE.Mesh(textGeometry, textMaterial)
         scene.add(text);
 
-        console.time('blocks');
+        console.time('blocks_render_time');
 
         const boxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
         for (let i = 0; i < 100; i++) {
@@ -183,7 +184,7 @@ fontLoader.load(
             scene.add(block);
         }
 
-        console.timeEnd('blocks');
+        console.timeEnd('blocks_render_time');
     }
 )
 
@@ -202,11 +203,16 @@ window.addEventListener('resize', () => {
 
     // Update camera
     camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
+    camera.updateProjectionMatrix();
 
     // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+})
+
+window.addEventListener('dblclick', () => {
+    if (!document.fullscreenElement) canvas.requestFullscreen();
+    else document.exitFullscreen();
 })
 
 /**
@@ -217,10 +223,10 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.x = 1;
 camera.position.y = 1;
 camera.position.z = 1;
-scene.add(camera)
+scene.add(camera);
 
 // Controls
-const controls = new OrbitControls(camera, canvas)
+const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true
 
 /**
