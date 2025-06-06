@@ -218,9 +218,7 @@ window.addEventListener('dblclick', () => {
 */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
-camera.position.x = 1;
-camera.position.y = 1;
-camera.position.z = 1;
+camera.position.set(0, 0, 4);
 scene.add(camera);
 
 // Controls
@@ -237,6 +235,8 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+renderer.setClearColor(0x6a8caf);
 
 /**
  * Animate
