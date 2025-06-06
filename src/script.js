@@ -114,7 +114,6 @@ const fontLoader = new FontLoader();
 fontLoader.load(
     '/fonts/Minecraft_Regular.json',
     (font) => {
-        console.log("Loaded font", font);
         textGeometry = new TextGeometry(
             'Chicken Jockey',
             {
@@ -131,7 +130,6 @@ fontLoader.load(
         )
 
         textGeometry.center();
-
 
         const textMaterial = new THREE.MeshMatcapMaterial({ matcap: toonMatcapTexture });
         // textMaterial.wireframe = true;  
